@@ -12,7 +12,7 @@ sample_file["Date"]=pd.to_datetime(sample_file["TYear"].astype(str)+"-"\
                                    +sample_file["TMonth"].astype(str),format="%Y-%m")
     
 from dashboarding import dashboard_class
-
+from calculation_main import main_dashboard_calc
 
     
     
@@ -23,15 +23,37 @@ from dashboarding import dashboard_class
 header = ['COGS','Discounts','Shipping Cost','Shipping Charged','Avg.Order Value','Avg Order Profit','LTV','CAC','Net Margin',\
           'Gross Margin','Ad Spend','Ad Speed/Order','Handling Fee','Transaction Fee','Disputed Revenue','Refunded',\
               'Unique Visitors','Conversion Rate','Revenue Visitor','Net Profit/Visitor']
+    
 card_title=[]
 
 header_big = ['Number Of Orders','Number Of Refunds and Cancellations','Unique Visitors','Conversion Rate']
 card_title=[]
 
+# def calculate_values_kipis():
+#     calculations=main_dashboard_calc.calculations(revenue=0,taxes=0,shipping_cost=0,other_expenses=0,\
+#                                                   handling_fee=0,cogs=0,adspend=0,app_expenses=0,\
+#                  tax_rate=0,fb_adspend=0,goog_adspend=0,other_marketing_expenses=0,transaction_fees=0,miscellaneous_expense=0)
+#     revenue=calculations.revenue()
+#     adspend=calculations.adspend()
+#     taxes_calc=calculations.taxes_calc()
+#     other_expenses=calculations.other_expenses()
+#     tot_expenses=calculations.tot_expenses()
+#     net_profit=calculations.net_profit()
+#     avg_order_value=calculations.avg_order_value()
+#     avg_order_profit=calculations.avg_order_profit()
+#     ltv=calculations.ltv()
+#     cac=calculations.cac()
+#     net_margin=calculations.net_margin()
+#     gross_margin=calculations.gross_margin()
+#     gross_profit=calculations.gross_profit()
+    
+    
+        
+    
             
 
 first_page=dashboard_class.dashboard(sample_file,user_style={"text-align": "auto",
-                  'max-height': '200px',
+                  'max-height': '20px',
                   'overflow': 'auto'})  
 
 layout1 = html.Div([
@@ -39,18 +61,20 @@ layout1 = html.Div([
 
 ])  
                             
+
+expenses_table=dbc.Spinner(html.Div(dbc.Table(id='simple_table'),style={"maxHeight": "400px", "overflow": "scroll"})),
+table=dbc.Spinner(html.Div(dbc.Table(id='bordered_table'),style={"maxHeight": "400px", "overflow": "scroll"})),
+check_list=html.Div([html.Div(id="check_list"),layout1,html.Hr()])      
+kpi_small=dbc.Container(first_page.kpi_creator_smaller(16,4),fluid=True),
+kpi_big=dbc.Container(first_page.kpi_creator_bigger(4,2),fluid=True),
+                            
 main_page_var = dbc.Container(
-    [   
-        dbc.Spinner(html.Div(dbc.Table(id='simple_table'),style={"overflow": "scroll"})),
-        dbc.Spinner(html.Div(dbc.Table(id='bordered_table',style={
-                          'max-height': '200px',
-                          'overflow': 'auto'}),style={"overflow": "scroll"})),
-        html.Div(id="check_list"), 
-        layout1,
-        html.Hr(),
-        dbc.Container(first_page.kpi_creator_smaller(16,4)),
-        dbc.Container(first_page.kpi_creator_bigger(4,2)),
-    ],
+    [html.Hr(),   
+     dbc.Row([dbc.Col(expenses_table,md=4),dbc.Col(kpi_big)]),
+     dbc.Row(check_list,class_name="g-0"),
+     dbc.Row(kpi_small,class_name="g-0"),
+     dbc.Row(table,)
+    ],fluid=True,
 )
 
     
@@ -66,7 +90,7 @@ dash_app.title = "Shopify Data Analysis"
 dash_app.layout = dbc.Container(
     [dcc.Store(id='dates_var',storage_type='session'),
      dcc.Location(id="url", refresh=True), 
-     dbc.Row(dbc.Col(id="page-content",style={"padding":"0px"},width=True))
+     dbc.Row(dbc.Col(id="page-content",style={"padding":"0px"}))
      ],
    fluid=True
 )
@@ -82,7 +106,9 @@ def fill_kpi_values_smaller(values,val):
     
     
 
-    first_page=dashboard_class.dashboard(sample_file,user_style={"text-align": "center"})
+    first_page=dashboard_class.dashboard(sample_file,user_style={"text-align": "auto",
+                      'max-height': '200px',
+                      'overflow': 'auto'})
     tot_position=range(16)
     card_title=np.repeat('$0',16)
     
@@ -99,7 +125,9 @@ def fill_kpi_values_smaller(values,val):
 )
 def fill_kpi_values_bigger(values,val):
     
-    first_page=dashboard_class.dashboard(sample_file,user_style={"text-align": "center"})
+    first_page=dashboard_class.dashboard(sample_file,user_style={"text-align": "auto",
+                      'max-height': '200px',
+                      'overflow': 'auto'})
     tot_position=range(4)
     card_title=np.repeat('$0',4)
     

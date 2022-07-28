@@ -9,7 +9,9 @@ import plotly.graph_objects as go
 
 class dashboard:
     
-    def __init__(self, df, user_style={"overflow": "auto"},kpi_small="14rem",kpi_big="18rem"):
+    def __init__(self, df, user_style={"text-align": "auto",
+                      'max-height': '200px',
+                      'overflow': 'auto'},kpi_small="14rem",kpi_big="18rem"):
         self.df = df
         self.user_style = user_style
         self.kpi_small=kpi_small
@@ -25,48 +27,83 @@ class dashboard:
         table = dbc.Table.from_dataframe(self.df, striped=True, bordered=False, hover=True,style=self.user_style)
         return table
     
-    def card_bigger_kpi(self,position,header="",card_title="",paragraph="",footer="",):
-        card = dbc.Card(
-        [
-            dbc.CardHeader(header),
-            dbc.CardBody(
-                [
-                    html.H4(card_title, className="card-title"),
-                    html.P(paragraph, className="card-text"),
-                ]
-            ),
-            dbc.CardFooter(footer),
-        ],
-        style={"width": self.kpi_big},
-        id={
-                'type': 'big-kpi',
-                'index': position
-            },
-        
-                        )
+    def card_bigger_kpi(self,position,header="",card_title="",paragraph="",footer="",initial=True):
+        if initial==True:
+            card = dbc.Card(
+            [
+                dbc.CardHeader(header),
+                dbc.CardBody(
+                    [
+                        html.H4(card_title, className="card-title"),
+                        html.P(paragraph, className="card-text"),
+                    ]
+                ),
+                dbc.CardFooter(footer),
+            ],
+            style={"width": self.kpi_big},
+            id={
+                    'type': 'big-kpi',
+                    'index': position
+                },
+            
+                            )
+        else:
+            card = dbc.Card(
+            [
+                dbc.CardHeader(header),
+                dbc.CardBody(
+                    [
+                        html.H4(card_title, className="card-title"),
+                        html.P(paragraph, className="card-text"),
+                    ]
+                ),
+                dbc.CardFooter(footer),
+            ],
+            style={"width": self.kpi_big},
+
+            
+                            )
+            
         
         return card
     
     
-    def card_smaller_kpi(self,position,header="",card_title="",paragraph="",footer=""):
-        card = dbc.Card(
-
-        [
-            dbc.CardHeader(header),
-            dbc.CardBody(
-                [
-                    html.H4(card_title, className="card-title"),
-                    html.P(paragraph, className="card-text"),
-                ]
-            ),
-            dbc.CardFooter(footer),
-        ],
-        style={"width": self.kpi_small},
-        id={
-                'type': 'small-kpi',
-                'index': position
-            },
-                        )
+    def card_smaller_kpi(self,position,header="",card_title="",paragraph="",footer="",initial=True):
+        if initial==True:
+            card = dbc.Card(
+    
+            [
+                dbc.CardHeader(header),
+                dbc.CardBody(
+                    [
+                        html.H4(card_title, className="card-title"),
+                        html.P(paragraph, className="card-text"),
+                    ]
+                ),
+                dbc.CardFooter(footer),
+            ],
+            style={"width": self.kpi_small},
+            id={
+                    'type': 'small-kpi',
+                    'index': position
+                },
+                            )
+        else:
+            card = dbc.Card(
+    
+            [
+                dbc.CardHeader(header),
+                dbc.CardBody(
+                    [
+                        html.H4(card_title, className="card-title"),
+                        html.P(paragraph, className="card-text"),
+                    ]
+                ),
+                dbc.CardFooter(footer),
+            ],
+            style={"width": self.kpi_small},
+                            )
+            
         
         return card
     
