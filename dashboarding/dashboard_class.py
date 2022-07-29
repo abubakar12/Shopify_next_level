@@ -18,13 +18,14 @@ class dashboard:
         self.kpi_big=kpi_big
 
 
-    def bordered_table(self):
-        table = dbc.Table.from_dataframe(self.df, striped=True, bordered=True, hover=True,style=self.user_style)
+    def bordered_table(self,expenses_df_datewise):
+        table = dbc.Table.from_dataframe(expenses_df_datewise, striped=True, bordered=True, hover=True,style=self.user_style)
         return table
     
     
-    def simple_table(self):
-        table = dbc.Table.from_dataframe(self.df, striped=True, bordered=False, hover=True,style=self.user_style)
+    def simple_table(self,expenses_df):
+        # self.expenses_df = expenses_df
+        table = dbc.Table.from_dataframe(expenses_df, striped=True, bordered=False, hover=True,style=self.user_style)
         return table
     
     def card_bigger_kpi(self,position,header="",card_title="",paragraph="",footer="",initial=True):
@@ -143,9 +144,9 @@ class dashboard:
         
         return card_row
      
-    def trace_graphs(self,columns_used,name_date_columns="Date"):
+    def trace_graphs(self,columns_used,filt_file,name_date_columns="Date"):
 
-        df=self.df
+        df=filt_file.copy()
 
         
         fig = go.Figure()

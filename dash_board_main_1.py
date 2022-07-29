@@ -28,6 +28,7 @@ dash_app.title = "Shopify Data Analysis"
 dash_app.layout = dbc.Container(
     [dcc.Store(id='dates_var',storage_type='session'),
      dcc.Store(id='small-kpi-vals',storage_type='session'),
+     dcc.Store(id='sample_file',storage_type='session'),
      dcc.Store(id='filt_file',storage_type='session'),
      dcc.Location(id="url", refresh=True), 
      dbc.Row(dbc.Col(id="page-content",style={"padding":"0px"}))
